@@ -12,6 +12,14 @@ public class Coin {
     private float price;
     private long marketCap;
 
+    public Coin(int id, String name, String abbreviation, float price, long marketCap) {
+        this.id = id;
+        this.name = name;
+        this.abbreviation = abbreviation;
+        this.price = price;
+        this.marketCap = marketCap;
+    }
+
     public Coin(String name, String abbreviation, float price, long marketCap) {
         this.name = name;
         this.abbreviation = abbreviation;
@@ -58,6 +66,4 @@ public class Coin {
     public void setMarketCap(long marketCap) {
         this.marketCap = marketCap;
     }
-
-
 }
