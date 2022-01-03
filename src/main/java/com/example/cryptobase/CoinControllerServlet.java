@@ -3,28 +3,34 @@ package com.example.cryptobase;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import javax.sql.DataSource;
-import javax.annotation.Resource;
 
 /**
  * This servlet acts as a page controller for the app,
  * handling all requests from the user.
  */
-@WebServlet(name = "CoinControllerServlet", value = "/*")
+@WebServlet(name = "CoinControllerServlet", value = "/")
 public class CoinControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CoinDAO coinDAO;
 
-    @Resource(name="jdbc/CoinbaseDB")
-    private DataSource dataSource;
-
     @Override
     public void init() {
-        coinDAO = new CoinDAO(dataSource);
+        try {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:comp/env");
+            DataSource dataSource = (DataSource) envContext.lookup("jdbc/CoinbaseDB");
+            coinDAO = new CoinDAO(dataSource);
+        } catch (NamingException ex) {
+            System.err.println(ex);
+        }
     }
 
     @Override
@@ -75,7 +81,7 @@ public class CoinControllerServlet extends HttpServlet {
     private void listCoins(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         List<Coin> coins = coinDAO.listAllCoins();
-        request.setAttribute("coinList", coins);
+        request.setAttribute("coins", coins);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("coinList.jsp");
         requestDispatcher.forward(request, response);
     }

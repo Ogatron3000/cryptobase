@@ -76,7 +76,7 @@ public class CoinDAO {
 
         try (Connection connection = dataSource.getConnection()) {
 
-            String sql = "GET * FROM coin";
+            String sql = "SELECT * FROM coin";
 
             try (Statement statement = connection.createStatement()) {
 
