@@ -141,6 +141,7 @@ public class CoinDAO {
                 statement.setString(2, coin.getAbbreviation());
                 statement.setFloat(3, coin.getPrice());
                 statement.setLong(4, coin.getMarketCap());
+                statement.setInt(5, coin.getId());
 
                 coinUpdated = statement.executeUpdate() == 1;
             }

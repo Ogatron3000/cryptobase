@@ -3,16 +3,19 @@ package com.example.cryptobase;
 import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.DataSource;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet(name = "helloServlet", value = "/")
 public class HelloServlet extends HttpServlet {
-    private String message;
+    private CoinDAO coinDAO;
+    private DataSource dataSource;
 
     public void init() {
-        message = "Hello World!";
+        coinDAO = new CoinDAO(dataSource);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String action = request.getServletPath();
         response.setContentType("text/html");
 
         // Hello
